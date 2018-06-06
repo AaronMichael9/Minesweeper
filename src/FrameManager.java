@@ -13,6 +13,8 @@ import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 
+import Analyzers.Analyzer;
+
 
 public class FrameManager {
 	
@@ -56,7 +58,7 @@ public class FrameManager {
 		for (JButton[] buttons:tiles)
 			for (JButton button:buttons)
 				button.setIcon(black);
-		gameManager.startGame();
+		gameManager.initialGame();
 	}
 	private void createFrame(){
 		frame = new JFrame("Minesweeper");
@@ -205,5 +207,8 @@ public class FrameManager {
 	}
 	public void putFlag(int y,int x){
 		tiles[y][x].setIcon(flag);
+	}
+	public void close(){
+		frame.dispose();
 	}
 }

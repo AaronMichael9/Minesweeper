@@ -1,4 +1,8 @@
 import javax.swing.JFrame;
+
+import Analyzers.Analyzer;
+import Analyzers.DumbAnalyzer;
+import Analyzers.PercentAnalyzer;
 public class Main {
 	
 
@@ -7,7 +11,9 @@ public class Main {
 	final static int bombs = 40;
 	
 	public static void main(String[] args) {
-		FrameManager game = new FrameManager(null,rows,cols,bombs);
+		//Analyzer player = new DumbAnalyzer();
+		Analyzer player = new PercentAnalyzer();
+		FrameManager game = new FrameManager(player,rows,cols,bombs);
 	}
 
 }
