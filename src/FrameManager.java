@@ -66,7 +66,7 @@ public class FrameManager {
 	}
 	private void upkeepFrame(){
 		frame.pack();
-		frame.setSize(1200, 1000);
+		frame.setSize(1500, 1000);
 		frame.setVisible(true);
 	}
 	
@@ -106,6 +106,7 @@ public class FrameManager {
 		holder.add(progress,BorderLayout.LINE_START);
 		holder.add(bombR,BorderLayout.LINE_END);
 		resetButton = new JButton();
+		resetButton.addActionListener(new resetListener(gameManager));
 		JPanel oholder = new JPanel();
 		frame.add(oholder, BorderLayout.PAGE_END);
 		oholder.add(resetButton,BorderLayout.CENTER);
@@ -188,12 +189,17 @@ public class FrameManager {
 		//have fun
 	}
 	public void reveal(int y,int x,int n){
+		tiles[y][x].setText("");
 		if (n==-3)
 			tiles[y][x].setIcon(mine);
 		else if (n==0)
 			tiles[y][x].setIcon(green);
+		else if (n==-1)
+			tiles[y][x].setIcon(black);
+		else if (n==-2)
+			tiles[y][x].setIcon(flag);
 		else{
-			//tiles[y][x].setIcon(green);
+			tiles[y][x].setIcon(null);
 			tiles[y][x].setText(n+"");
 		}
 	}

@@ -60,11 +60,14 @@ public class GameManager {
 					remainingBombs++;
 				}
 				int n = board[y][x];
-				System.out.println(n);
 				frameManager.reveal(y, x, n);
 				// you lost
 				if (n == -3) {
 					lost = true;
+					for (int i=0;i<rows;i++)
+						for (int j=0;j<cols;j++)
+							if (board[i][j]==-3)
+								frameManager.reveal(i, j, -3);
 				} else {
 					remainingTiles--;
 				}
@@ -78,7 +81,22 @@ public class GameManager {
 		frameManager.updateTiles();
 		frameManager.updateBombs();
 	}
-
+	public void flagTile(int y,int x){
+		if (y<0 || x<0 || y>=rows || x>=cols)
+			return;
+		if (revealed[y][x])
+			return;
+		if (flagged[y][x]){
+			frameManager.reveal(y, x, -1);
+			remainingBombs++;
+		}
+		else{
+			frameManager.reveal(y, x, -2);
+			remainingBombs--;
+		}
+		frameManager.updateBombs();
+	}
+	
 	public void pressSwitchButton() {
 		if (AUI && !won && !lost) {
 			AUI = false;
@@ -89,15 +107,23 @@ public class GameManager {
 
 	public void pressTile(int y, int x) {
 		if (AUI && !won && !lost) {
-			AUI = false;
-			chooseTile(y, x);
-			AUI = true;
+			if (mode==Mode.clear){
+				AUI = false;
+				chooseTile(y, x);
+				AUI = true;
+			}
+			else{
+				AUI = false;
+				flagTile(y,x);
+				AUI = true;
+			}
 		}
 	}
 
 	public void pressReset() {
 		if (AUI) {
 			AUI = false;
+			System.out.println("*");
 			startGame();
 		}
 	}
@@ -123,13 +149,17 @@ public class GameManager {
 			board[y][x] = -3;
 		}
 		for (int y = 0; y < rows; y++)
-			for (int x = 0; x < cols; x++)
+			for (int x = 0; x < cols; x++){
 				if (board[y][x] != -3)
 					board[y][x] = count(y, x);
+				System.out.println("-");
+				frameManager.reveal(y, x, -1);
+			}
 		frameManager.updateTiles();
 		frameManager.updateBombs();
 		if (player==null)
 			AUI = true;
+		System.out.println("+");
 	}
 
 	public int randY() {
