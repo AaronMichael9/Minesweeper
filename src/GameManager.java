@@ -69,13 +69,16 @@ public class GameManager {
 				// you lost
 				if (n == -3) {
 					lost = true;
-					for (int i = 0; i < rows; i++)
-						for (int j = 0; j < cols; j++)
-							if (board[i][j] == -3)
-								frameManager.reveal(i, j, -3);
+					frameManager.reveal(y, x, -4);
+//					for (int i = 0; i < rows; i++)
+//						for (int j = 0; j < cols; j++)
+//							if (board[i][j] == -3 && (i != y || x != j))
+//								frameManager.reveal(i, j, -3);
 				} else {
 					remainingTiles--;
 					tileCount++;
+					if (remainingTiles == 0)
+						won = true;
 				}
 				if (n == 0) {
 					for (int i = y - 1; i <= y + 1; i++)
@@ -188,7 +191,7 @@ public class GameManager {
 			return;
 		playerView = new int[rows][cols];
 		for (int i = 0; i < rows; i++)
-			for (int j = 0; j < rows; j++) {
+			for (int j = 0; j < cols; j++) {
 				if (revealed[i][j])
 					playerView[i][j] = board[i][j];
 				else if (flagged[i][j])
@@ -211,30 +214,37 @@ public class GameManager {
 	public void initialGame() {
 		startGame();
 		if (player == null) {
-			//let the (human) player play
+			// let the (human) player play
 			return;
 		}
-		while (wins + losses < 1000) {
-			generatePlayerView();
-			Action next = player.nextMove(playerView);
-			if (next.flag)
-				flagTile(next.y, next.x);
-			else
-				chooseTile(next.y, next.x);
-			if (won || lost) {
-				if (won)
-					wins++;
+		boolean done = false;
+		int totalLosses = 0;
+		while (!done || (player.isTesting() && wins == 0)){
+			done = true;
+			losses = 0;
+			while (wins + losses < 1000) {
+				generatePlayerView();
+				Action next = player.nextMove(playerView);
+				if (next.flag)
+					flagTile(next.y, next.x);
 				else
-					losses++;
-				player.newGame(board, won);
-				System.out.println(wins+"/"+(wins+losses));
-				startGame();
+					chooseTile(next.y, next.x);
+				if (won || lost) {
+					if (won) {
+						wins++;
+					} else
+						losses++;
+					player.newGame(board, won);
+					// System.out.println(wins+"/"+(wins+losses));
+					startGame();
+				}
 			}
+			totalLosses+=losses;
 		}
 		frameManager.close();
 		System.out.println("Final Results:");
-		System.out.println(wins+" wins");
-		System.out.println(losses+" losses");
-		System.out.println(tileCount/1000.0 + " average tiles correct");
+		System.out.println(wins + " wins");
+		System.out.println(totalLosses + " losses");
+		System.out.println(tileCount /(totalLosses+wins) + " average tiles correct");
 	}
 }

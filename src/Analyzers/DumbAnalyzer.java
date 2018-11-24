@@ -19,5 +19,7 @@ public class DumbAnalyzer implements Analyzer{
 
 	@Override
 	public void newGame(int[][] lastBoard, boolean won) {}
-
+	public boolean isTesting(){
+		return false;
+	}
 }

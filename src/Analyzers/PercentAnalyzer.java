@@ -9,9 +9,7 @@ import java.util.Queue;
 //first square is a guess
 //then tries to location squares that are definitely safe/mined
 //(only looks one step ahead unfortunately)
-//same result as the previous analyzer, no wins
-//slightly higher tiles revealed
-//295 to 305
+//Just under 80% win rate
 
 
 
@@ -55,14 +53,15 @@ public class PercentAnalyzer implements Analyzer {
 		//find best odds
 		double min = 1;
 		for (int i=0;i<rows;i++)
-			for (int j=0;j<rows;j++)
+			for (int j=0;j<cols;j++)
 				if (board[i][j]==-1 && chance[i][j]<min)
 					min = chance[i][j];
 		//find square
 		for (int i=0;i<rows;i++)
-			for (int j=0;j<rows;j++)
+			for (int j=0;j<cols;j++)
 				if (board[i][j]==-1 && chance[i][j]<=min)
 					return new Action(i,j);
+		
 		
 		//should never get here, but just in case
 		return new Action((int) (Math.random()*rows),(int) (Math.random()*cols));
@@ -70,6 +69,9 @@ public class PercentAnalyzer implements Analyzer {
 
 	@Override
 	public void newGame(int[][] lastBoard, boolean won) {
+		queue = new LinkedList<Action>();
+		firstMove = true;
+		
 	}
 
 	public void calculate(int[][] board, int y, int x) {
@@ -98,5 +100,7 @@ public class PercentAnalyzer implements Analyzer {
 				}
 
 	}
-
+	public boolean isTesting(){
+		return true;
+	}
 }

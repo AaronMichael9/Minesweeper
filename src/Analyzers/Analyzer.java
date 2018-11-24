@@ -1,9 +1,9 @@
 package Analyzers;
 
 public interface Analyzer {
-	
 	public Action nextMove(int[][] board);
 	public void newGame(int[][] lastBoard,boolean won);
+	public boolean isTesting();
 }
 //Implement Minesweeper AI here.
 //Given A board state, it should return a move represented by the Action Class.

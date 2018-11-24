@@ -33,6 +33,7 @@ public class FrameManager {
 	private Icon notflag;
 	private Icon black;
 	private Icon green;
+	private Icon explosion;
 	private JButton[][] tiles = new JButton[15][30];
 	
 	
@@ -91,6 +92,9 @@ public class FrameManager {
 			Image iblack = ImageIO.read(new File("assets/black.png"));
 			iblack = iblack.getScaledInstance(50, 50, 0);
 			black = new ImageIcon(iblack);
+			Image iex = ImageIO.read(new File("assets/explosion.jpg"));
+			iex = iex.getScaledInstance(50, 50, 0);
+			explosion = new ImageIcon(iex);
 		}
 		catch(Exception e){
 			System.out.println("failed to load images");
@@ -200,6 +204,8 @@ public class FrameManager {
 			tiles[y][x].setIcon(black);
 		else if (n==-2)
 			tiles[y][x].setIcon(flag);
+		else if (n==-4)
+			tiles[y][x].setIcon(explosion);
 		else{
 			tiles[y][x].setIcon(null);
 			tiles[y][x].setText(n+"");
