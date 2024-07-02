@@ -9,3 +9,5 @@ C. A challenge. Try to construct the best algorithm for playing Minesweeper
    As an alternative the system also tracks the average number of tiles revealed per game.
    (As a side note, this measurement is more consistent than I expected. 450 tiles, 1000 games at a time, it usually differs by less than 10)
    Currently the best is 300 tiles per game.
+   update: the initial shortcomings of the algorithms was due to a bug that was causing my solvers to only see half the board. After fixing that my best algorithm
+   achieves approximately 80% win rate, but averaging less than 350 tiles per game.
